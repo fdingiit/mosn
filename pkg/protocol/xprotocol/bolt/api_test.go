@@ -2,11 +2,12 @@ package bolt
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
-	"mosn.io/mosn/pkg/protocol"
-	"mosn.io/mosn/pkg/protocol/xprotocol"
-	"mosn.io/pkg/buffer"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"mosn.io/api/protocol/xprotocol"
+	"mosn.io/pkg/buffer"
+	"mosn.io/pkg/protocol"
 )
 
 // decoded result should equal to request

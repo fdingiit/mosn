@@ -21,15 +21,14 @@ import (
 	"errors"
 	"time"
 
-	"mosn.io/mosn/pkg/config/v2"
-	"mosn.io/mosn/pkg/types"
+	"mosn.io/api"
 )
 
 // bolt constants
 const (
-	ProtocolName    types.ProtocolName = "bolt" // protocol
-	ProtocolCode    byte               = 1
-	ProtocolVersion byte               = 1
+	ProtocolName    api.Protocol = "bolt" // protocol
+	ProtocolCode    byte         = 1
+	ProtocolVersion byte         = 1
 
 	CmdTypeResponse      byte = 0 // cmd type
 	CmdTypeRequest       byte = 1
@@ -84,14 +83,14 @@ var (
 	ErrUnKnownCmdCode = errors.New(UnKnownCmdCode)
 )
 
-// DefaultSofaRPCHealthCheckConf
-var DefaultSofaRPCHealthCheckConf = v2.HealthCheck{
-	HealthCheckConfig: v2.HealthCheckConfig{
-		Protocol:           SofaRPC,
-		HealthyThreshold:   DefaultHealthyThreshold,
-		UnhealthyThreshold: DefaultUnhealthyThreshold,
-	},
-	Timeout:        DefaultBoltHeartBeatTimeout,
-	Interval:       DefaultBoltHeartBeatInterval,
-	IntervalJitter: DefaultIntervalJitter,
-}
+//// DefaultSofaRPCHealthCheckConf
+//var DefaultSofaRPCHealthCheckConf = v2.HealthCheck{
+//	HealthCheckConfig: v2.HealthCheckConfig{
+//		Protocol:           SofaRPC,
+//		HealthyThreshold:   DefaultHealthyThreshold,
+//		UnhealthyThreshold: DefaultUnhealthyThreshold,
+//	},
+//	Timeout:        DefaultBoltHeartBeatTimeout,
+//	Interval:       DefaultBoltHeartBeatInterval,
+//	IntervalJitter: DefaultIntervalJitter,
+//}

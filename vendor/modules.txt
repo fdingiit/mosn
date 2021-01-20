@@ -237,7 +237,7 @@ github.com/satori/go.uuid
 github.com/shirou/gopsutil/cpu
 github.com/shirou/gopsutil/internal/common
 github.com/shirou/gopsutil/load
-# github.com/stretchr/testify v1.6.0
+# github.com/stretchr/testify v1.7.0
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
 # github.com/trainyao/go-maglev v0.0.0-20200611125015-4c1ae64d96a8
@@ -350,7 +350,7 @@ google.golang.org/grpc/status
 google.golang.org/grpc/tap
 # gopkg.in/natefinch/lumberjack.v2 v2.0.0
 gopkg.in/natefinch/lumberjack.v2
-# gopkg.in/yaml.v2 v2.2.8
+# gopkg.in/yaml.v2 v2.4.0
 gopkg.in/yaml.v2
 # gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c
 gopkg.in/yaml.v3
@@ -362,9 +362,15 @@ istio.io/gogo-genproto/googleapis/google/api
 istio.io/gogo-genproto/googleapis/google/rpc
 # k8s.io/klog v1.0.0
 k8s.io/klog
-# mosn.io/api v0.0.0-20201104063430-1abb4764d12a
+# mosn.io/api v0.0.0-20210113033009-f24f4e59b2bc => github.com/fdingiit/api v0.0.0-20210119063843-f5ac263a02c5
 mosn.io/api
-# mosn.io/pkg v0.0.0-20201228070559-80e9ae937bd5
+mosn.io/api/protocol/xprotocol
+mosn.io/api/types
+# mosn.io/pkg v0.0.0-20201228070559-80e9ae937bd5 => github.com/fdingiit/pkg v0.0.0-20210119065649-3fcc1522bbbd
 mosn.io/pkg/buffer
+mosn.io/pkg/context
 mosn.io/pkg/log
+mosn.io/pkg/protocol
+mosn.io/pkg/protocol/xprotocol
 mosn.io/pkg/utils
+mosn.io/pkg/variable

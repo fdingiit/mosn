@@ -22,11 +22,13 @@ import (
 	"testing"
 
 	"mosn.io/api"
+	pkgprotocol "mosn.io/pkg/protocol"
+
 	"mosn.io/mosn/pkg/types"
 )
 
 func TestMapping(t *testing.T) {
-	if _, err := MappingHeaderStatusCode(context.Background(), Xprotocol, nil); err != ErrNoMapping {
+	if _, err := pkgprotocol.MappingHeaderStatusCode(context.Background(), Xprotocol, nil); err != pkgprotocol.ErrNoMapping {
 		t.Error("no register type")
 	}
 	testcases := []struct {
@@ -43,14 +45,14 @@ func TestMapping(t *testing.T) {
 		},
 	}
 	for i, tc := range testcases {
-		code, _ := MappingHeaderStatusCode(context.Background(), HTTP1, tc.Header)
+		code, _ := pkgprotocol.MappingHeaderStatusCode(context.Background(), HTTP1, tc.Header)
 		if code != tc.Expetced {
 			t.Errorf("#%d unexpected status code", i)
 		}
 	}
 
 	for i, tc := range testcases {
-		code, _ := MappingHeaderStatusCode(context.Background(), HTTP2, tc.Header)
+		code, _ := pkgprotocol.MappingHeaderStatusCode(context.Background(), HTTP2, tc.Header)
 		if code != tc.Expetced {
 			t.Errorf("#%d unexpected status code", i)
 		}

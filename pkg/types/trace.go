@@ -18,45 +18,14 @@
 package types
 
 import (
-	"context"
-	"time"
-
-	"mosn.io/api"
+	"mosn.io/api/types"
 )
 
 // factory
-type TracerBuilder func(config map[string]interface{}) (Tracer, error)
+type TracerBuilder = types.TracerBuilder
 
-type Driver interface {
-	Init(config map[string]interface{}) error
+type Driver = types.Driver
 
-	Register(proto api.Protocol, builder TracerBuilder)
+type Tracer = types.Tracer
 
-	Get(proto api.Protocol) Tracer
-}
-
-type Tracer interface {
-	Start(ctx context.Context, request interface{}, startTime time.Time) Span
-}
-
-type Span interface {
-	TraceId() string
-
-	SpanId() string
-
-	ParentSpanId() string
-
-	SetOperation(operation string)
-
-	SetTag(key uint64, value string)
-
-	SetRequestInfo(requestInfo api.RequestInfo)
-
-	Tag(key uint64) string
-
-	FinishSpan()
-
-	InjectContext(requestHeaders api.HeaderMap, requestInfo api.RequestInfo)
-
-	SpawnChild(operationName string, startTime time.Time) Span
-}
+type Span = types.Span

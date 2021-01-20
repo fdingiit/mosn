@@ -20,14 +20,13 @@ package context
 import (
 	"context"
 
+	pkgcontext "mosn.io/pkg/context"
+
 	"mosn.io/mosn/pkg/types"
 )
 
 func Get(ctx context.Context, key types.ContextKey) interface{} {
-	if mosnCtx, ok := ctx.(*valueCtx); ok {
-		return mosnCtx.builtin[key]
-	}
-	return ctx.Value(key)
+	return pkgcontext.Get(ctx, key)
 }
 
 // WithValue add the given key-value pair into the existed value context, or create a new value context which contains the pair.
@@ -38,24 +37,10 @@ func Get(ctx context.Context, key types.ContextKey) interface{} {
 //
 // topology: context.Background -> mosn.valueCtx{'foo':'bar'} -> context.valueCtx -> mosn.valueCtx{'hmm':'haa'}
 func WithValue(parent context.Context, key types.ContextKey, value interface{}) context.Context {
-	if mosnCtx, ok := parent.(*valueCtx); ok {
-		mosnCtx.builtin[key] = value
-		return mosnCtx
-	}
-
-	// create new valueCtx
-	mosnCtx := &valueCtx{Context: parent}
-	mosnCtx.builtin[key] = value
-	return mosnCtx
+	return pkgcontext.WithValue(parent, key, value)
 }
 
 // Clone copy the origin mosn value context(if it is), and return new one
 func Clone(parent context.Context) context.Context {
-	if mosnCtx, ok := parent.(*valueCtx); ok {
-		clone := &valueCtx{Context: mosnCtx}
-		// array copy assign
-		clone.builtin = mosnCtx.builtin
-		return clone
-	}
-	return parent
+	return pkgcontext.Clone(parent)
 }

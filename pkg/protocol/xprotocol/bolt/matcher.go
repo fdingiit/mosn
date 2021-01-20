@@ -18,8 +18,8 @@
 package bolt
 
 import (
-	"mosn.io/mosn/pkg/protocol/xprotocol"
-	"mosn.io/mosn/pkg/types"
+	"mosn.io/api/types"
+	"mosn.io/pkg/protocol/xprotocol"
 )
 
 func init() {

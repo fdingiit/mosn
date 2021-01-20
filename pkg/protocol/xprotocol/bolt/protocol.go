@@ -23,9 +23,11 @@ import (
 	"net/http"
 	"sync/atomic"
 
-	"mosn.io/mosn/pkg/log"
-	"mosn.io/mosn/pkg/protocol/xprotocol"
-	"mosn.io/mosn/pkg/types"
+	"mosn.io/api"
+	xprotocolapi "mosn.io/api/protocol/xprotocol"
+	"mosn.io/api/types"
+	"mosn.io/pkg/buffer"
+	"mosn.io/pkg/protocol/xprotocol"
 )
 
 /**
@@ -71,11 +73,11 @@ func init() {
 type boltProtocol struct{}
 
 // types.Protocol
-func (proto *boltProtocol) Name() types.ProtocolName {
+func (proto *boltProtocol) Name() api.Protocol {
 	return ProtocolName
 }
 
-func (proto *boltProtocol) Encode(ctx context.Context, model interface{}) (types.IoBuffer, error) {
+func (proto *boltProtocol) Encode(ctx context.Context, model interface{}) (buffer.IoBuffer, error) {
 	switch frame := model.(type) {
 	case *Request:
 		return encodeRequest(ctx, frame)
@@ -86,15 +88,15 @@ func (proto *boltProtocol) Encode(ctx context.Context, model interface{}) (types
 		// return nil, xprotocol.ErrUnknownType
 		// FIXME: makes sofarpc protocol common
 		// bolt and boltv2 can be handled success on a same connection
-		if log.Proxy.GetLogLevel() >= log.DEBUG {
-			log.Proxy.Debugf(ctx, "[protocol][bolt] bolt maybe receive boltv2 encode")
-		}
+		//if log.Proxy.GetLogLevel() >= log.DEBUG {
+		//	log.Proxy.Debugf(ctx, "[protocol][bolt] bolt maybe receive boltv2 encode")
+		//}
 		engine := xprotocol.GetProtocol("boltv2")
 		return engine.Encode(ctx, model)
 	}
 }
 
-func (proto *boltProtocol) Decode(ctx context.Context, data types.IoBuffer) (interface{}, error) {
+func (proto *boltProtocol) Decode(ctx context.Context, data buffer.IoBuffer) (interface{}, error) {
 	if data.Len() > 0 {
 		code := data.Bytes()[0]
 		if code == 0x02 { // protocol boltv2
@@ -122,7 +124,7 @@ func (proto *boltProtocol) Decode(ctx context.Context, data types.IoBuffer) (int
 }
 
 // Heartbeater
-func (proto *boltProtocol) Trigger(requestId uint64) xprotocol.XFrame {
+func (proto *boltProtocol) Trigger(requestId uint64) xprotocolapi.XFrame {
 	return &Request{
 		RequestHeader: RequestHeader{
 			Protocol:  ProtocolCode,
@@ -136,7 +138,7 @@ func (proto *boltProtocol) Trigger(requestId uint64) xprotocol.XFrame {
 	}
 }
 
-func (proto *boltProtocol) Reply(request xprotocol.XFrame) xprotocol.XRespFrame {
+func (proto *boltProtocol) Reply(request xprotocolapi.XFrame) xprotocolapi.XRespFrame {
 	return &Response{
 		ResponseHeader: ResponseHeader{
 			Protocol:       ProtocolCode,
@@ -151,7 +153,7 @@ func (proto *boltProtocol) Reply(request xprotocol.XFrame) xprotocol.XRespFrame 
 }
 
 // Hijacker
-func (proto *boltProtocol) Hijack(request xprotocol.XFrame, statusCode uint32) xprotocol.XRespFrame {
+func (proto *boltProtocol) Hijack(request xprotocolapi.XFrame, statusCode uint32) xprotocolapi.XRespFrame {
 	return &Response{
 		ResponseHeader: ResponseHeader{
 			Protocol:       ProtocolCode,
@@ -194,7 +196,7 @@ func (proto *boltProtocol) PoolMode() types.PoolMode {
 	return types.Multiplex
 }
 
-func (proto *boltProtocol) EnableWorkerPool() bool{
+func (proto *boltProtocol) EnableWorkerPool() bool {
 	return true
 }
 

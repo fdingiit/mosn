@@ -18,66 +18,38 @@
 package xprotocol
 
 import (
-	"errors"
-
-	"mosn.io/mosn/pkg/protocol"
-
-	"mosn.io/mosn/pkg/types"
-)
-
-var (
-	protocolMap = make(map[types.ProtocolName]XProtocol)
-	matcherMap  = make(map[types.ProtocolName]types.ProtocolMatch)
-	mappingMap  = make(map[types.ProtocolName]protocol.HTTPMapping)
+	"mosn.io/api"
+	"mosn.io/api/types"
+	"mosn.io/pkg/protocol"
+	"mosn.io/pkg/protocol/xprotocol"
 )
 
 // RegisterProtocol register the protocol to factory
-func RegisterProtocol(name types.ProtocolName, protocol XProtocol) error {
-	// check name conflict
-	_, ok := protocolMap[name]
-	if ok {
-		return errors.New("duplicate protocol register:" + string(name))
-	}
-
-	protocolMap[name] = protocol
-	return nil
+func RegisterProtocol(name api.Protocol, protocol XProtocol) error {
+	return xprotocol.RegisterProtocol(name, protocol)
 }
 
 // GetProtocol return the corresponding protocol for given name(if was registered)
-func GetProtocol(name types.ProtocolName) XProtocol {
-	return protocolMap[name]
+func GetProtocol(name api.Protocol) XProtocol {
+	return xprotocol.GetProtocol(name)
 }
 
 // RegisterMatcher register the matcher of the protocol into factory
-func RegisterMatcher(name types.ProtocolName, matcher types.ProtocolMatch) error {
-	// check name conflict
-	_, ok := matcherMap[name]
-	if ok {
-		return errors.New("duplicate matcher register:" + string(name))
-	}
-
-	matcherMap[name] = matcher
-	return nil
+func RegisterMatcher(name api.Protocol, matcher types.ProtocolMatch) error {
+	return xprotocol.RegisterMatcher(name, matcher)
 }
 
 // GetMatcher return the corresponding matcher for given name(if was registered)
-func GetMatcher(name types.ProtocolName) types.ProtocolMatch {
-	return matcherMap[name]
+func GetMatcher(name api.Protocol) types.ProtocolMatch {
+	return xprotocol.GetMatcher(name)
 }
 
 // RegisterMapping register the HTTP status code mapping function of the protocol into factory
-func RegisterMapping(name types.ProtocolName, mapping protocol.HTTPMapping) error {
-	// check name conflict
-	_, ok := mappingMap[name]
-	if ok {
-		return errors.New("duplicate mapping register:" + string(name))
-	}
-
-	mappingMap[name] = mapping
-	return nil
+func RegisterMapping(name api.Protocol, mapping protocol.HTTPMapping) error {
+	return xprotocol.RegisterMapping(name, mapping)
 }
 
 // GetMapping return the corresponding HTTP status code mapping function for given name(if was registered)
-func GetMapping(name types.ProtocolName) protocol.HTTPMapping {
-	return mappingMap[name]
+func GetMapping(name api.Protocol) protocol.HTTPMapping {
+	return xprotocol.GetMapping(name)
 }

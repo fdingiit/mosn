@@ -2,16 +2,16 @@ package bolt
 
 import (
 	"context"
-	"github.com/stretchr/testify/assert"
-	"mosn.io/mosn/pkg/protocol"
-	"mosn.io/mosn/pkg/types"
-	"mosn.io/pkg/buffer"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"mosn.io/pkg/buffer"
+	"mosn.io/pkg/protocol"
 )
 
 const content = "this is the content"
 
-func getEncodedReqBuf() types.IoBuffer {
+func getEncodedReqBuf() buffer.IoBuffer {
 	// request build
 	// step 1, build a original request
 	var req = NewRpcRequest(123454321, protocol.CommonHeader{

@@ -22,14 +22,13 @@ import (
 	"encoding/binary"
 	"strconv"
 
-	"mosn.io/mosn/pkg/variable"
-
-	"mosn.io/mosn/pkg/protocol/xprotocol"
-	"mosn.io/mosn/pkg/types"
+	"mosn.io/api/types"
 	"mosn.io/pkg/buffer"
+	"mosn.io/pkg/protocol/xprotocol"
+	"mosn.io/pkg/variable"
 )
 
-func decodeRequest(ctx context.Context, data types.IoBuffer, oneway bool) (cmd interface{}, err error) {
+func decodeRequest(ctx context.Context, data buffer.IoBuffer, oneway bool) (cmd interface{}, err error) {
 	bytesLen := data.Len()
 	bytes := data.Bytes()
 
@@ -99,7 +98,7 @@ func decodeRequest(ctx context.Context, data types.IoBuffer, oneway bool) (cmd i
 	return request, err
 }
 
-func decodeResponse(ctx context.Context, data types.IoBuffer) (cmd interface{}, err error) {
+func decodeResponse(ctx context.Context, data buffer.IoBuffer) (cmd interface{}, err error) {
 	bytesLen := data.Len()
 	bytes := data.Bytes()
 

@@ -22,8 +22,9 @@ import (
 	"errors"
 	"net/http"
 
-	"mosn.io/mosn/pkg/protocol/xprotocol"
-	"mosn.io/mosn/pkg/types"
+	"mosn.io/api"
+	xprotocolapi "mosn.io/api/protocol/xprotocol"
+	"mosn.io/pkg/protocol/xprotocol"
 )
 
 func init() {
@@ -32,8 +33,8 @@ func init() {
 
 type boltStatusMapping struct{}
 
-func (m *boltStatusMapping) MappingHeaderStatusCode(ctx context.Context, headers types.HeaderMap) (int, error) {
-	cmd, ok := headers.(xprotocol.XRespFrame)
+func (m *boltStatusMapping) MappingHeaderStatusCode(ctx context.Context, headers api.HeaderMap) (int, error) {
+	cmd, ok := headers.(xprotocolapi.XRespFrame)
 	if !ok {
 		return 0, errors.New("no response status in headers")
 	}
