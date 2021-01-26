@@ -65,7 +65,7 @@ import (
  */
 
 func init() {
-	xprotocol.RegisterProtocol(ProtocolName, &boltProtocol{})
+	//xprotocol.RegisterProtocol(ProtocolName, &boltProtocol{})
 }
 
 type boltProtocol struct{}
@@ -194,7 +194,7 @@ func (proto *boltProtocol) PoolMode() types.PoolMode {
 	return types.Multiplex
 }
 
-func (proto *boltProtocol) EnableWorkerPool() bool{
+func (proto *boltProtocol) EnableWorkerPool() bool {
 	return true
 }
 

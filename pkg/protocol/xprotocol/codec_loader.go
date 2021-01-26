@@ -15,43 +15,50 @@
  * limitations under the License.
  */
 
-package utils
+package xprotocol
 
 import (
-	"sync/atomic"
-	"time"
+	"io/ioutil"
+	"plugin"
+	"strings"
+
+	"mosn.io/mosn/pkg/log"
 )
 
-type Timer struct {
-	innerTimer *time.Timer
-	stopped    int32
+const (
+	LoaderFunctionName string = "LoadCodec"
+)
+
+func InitCodec(dir string) error {
+	fileInfo, err := ioutil.ReadDir(dir)
+	if err != nil {
+		return err
+	}
+
+	for _, info := range fileInfo {
+		fileName := info.Name()
+		if strings.Contains(fileName, ".so") {
+			if err := readProtocolPlugin(dir + "/" + fileName); err != nil {
+				log.DefaultLogger.Warnf("load go plugin codec failed: %+v, err: %+v", dir+"/"+fileName, err)
+			}
+			log.DefaultLogger.Infof("load go plugin codec succeed: %+v", dir+"/"+fileName)
+		}
+	}
+
+	return nil
 }
 
-func NewTimer(d time.Duration, callback func()) *Timer {
-	return &Timer{
-		innerTimer: time.AfterFunc(d, callback),
-	}
-}
-
-// Stop stops the timer.
-func (t *Timer) Stop() {
-	if t == nil {
-		return
-	}
-	if !atomic.CompareAndSwapInt32(&t.stopped, 0, 1) {
-		return
+func readProtocolPlugin(path string) error {
+	p, err := plugin.Open(path)
+	if err != nil {
+		return err
 	}
 
-	t.innerTimer.Stop()
-}
+	sym, err := p.Lookup(LoaderFunctionName)
+	if err != nil {
+		return err
+	}
 
-func (t *Timer) Reset(d time.Duration) bool {
-	if t == nil {
-		return false
-	}
-	// already stopped
-	if atomic.LoadInt32(&t.stopped) == 1 {
-		return false
-	}
-	return t.innerTimer.Reset(d)
+	loadFunc := sym.(func() error)
+	return loadFunc()
 }

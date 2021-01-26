@@ -27,7 +27,7 @@ import (
 )
 
 func init() {
-	xprotocol.RegisterMapping(ProtocolName, &boltStatusMapping{})
+	//xprotocol.RegisterMapping(ProtocolName, &boltStatusMapping{})
 }
 
 type boltStatusMapping struct{}

@@ -18,12 +18,11 @@
 package bolt
 
 import (
-	"mosn.io/mosn/pkg/protocol/xprotocol"
 	"mosn.io/mosn/pkg/types"
 )
 
 func init() {
-	xprotocol.RegisterMatcher(ProtocolName, boltMatcher)
+	//xprotocol.RegisterMatcher(ProtocolName, boltMatcher)
 }
 
 // predicate first byte '0x1'
