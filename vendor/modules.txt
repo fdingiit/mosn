@@ -362,11 +362,11 @@ istio.io/gogo-genproto/googleapis/google/api
 istio.io/gogo-genproto/googleapis/google/rpc
 # k8s.io/klog v1.0.0
 k8s.io/klog
-# mosn.io/api v0.0.0-20210113033009-f24f4e59b2bc => github.com/fdingiit/api v0.0.0-20210119063843-f5ac263a02c5
+# mosn.io/api v0.0.0-20210125030935-708f51a98261
 mosn.io/api
 mosn.io/api/protocol/xprotocol
 mosn.io/api/types
-# mosn.io/pkg v0.0.0-20201228070559-80e9ae937bd5 => github.com/fdingiit/pkg v0.0.0-20210119065649-3fcc1522bbbd
+# mosn.io/pkg v0.0.0-20201228070559-80e9ae937bd5 => github.com/fdingiit/pkg v0.0.0-20210126093325-bfa0dfaa7c93
 mosn.io/pkg/buffer
 mosn.io/pkg/context
 mosn.io/pkg/log

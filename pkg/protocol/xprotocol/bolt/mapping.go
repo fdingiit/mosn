@@ -24,11 +24,10 @@ import (
 
 	"mosn.io/api"
 	xprotocolapi "mosn.io/api/protocol/xprotocol"
-	"mosn.io/pkg/protocol/xprotocol"
 )
 
 func init() {
-	xprotocol.RegisterMapping(ProtocolName, &boltStatusMapping{})
+	//xprotocol.RegisterMapping(ProtocolName, &boltStatusMapping{})
 }
 
 type boltStatusMapping struct{}

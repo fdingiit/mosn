@@ -141,7 +141,7 @@ type StreamReceiverFilterHandler interface {
 	SetConvert(on bool)
 
 	// GetFilterCurrentPhase get current phase for filter
-	GetFilterCurrentPhase() FilterPhase
+	GetFilterCurrentPhase() ReceiverFilterPhase
 }
 
 // StreamFilterChainFactory adds filter into callbacks
@@ -151,18 +151,24 @@ type StreamFilterChainFactory interface {
 
 // StreamFilterChainFactoryCallbacks is called in StreamFilterChainFactory
 type StreamFilterChainFactoryCallbacks interface {
-	AddStreamSenderFilter(filter StreamSenderFilter)
+	AddStreamSenderFilter(filter StreamSenderFilter, p SenderFilterPhase)
 
-	AddStreamReceiverFilter(filter StreamReceiverFilter, p FilterPhase)
+	AddStreamReceiverFilter(filter StreamReceiverFilter, p ReceiverFilterPhase)
 
 	// add access log per stream
 	AddStreamAccessLog(accessLog AccessLog)
 }
 
-type FilterPhase int
+type ReceiverFilterPhase int
 
 const (
-	BeforeRoute FilterPhase = iota
+	BeforeRoute ReceiverFilterPhase = iota
 	AfterRoute
 	AfterChooseHost
+)
+
+type SenderFilterPhase int
+
+const (
+	BeforeSend SenderFilterPhase = iota
 )

@@ -61,7 +61,11 @@ const cfgStr = `{
 				 "port_value": 34901
 			 }
 		 }
-	 }
+	 },
+	"codec": {
+		"type": "go-plugin",
+		"dir": "/Users/dingfei/Go/src/github.com/fdingiit/xprotocol_thrift"
+	}
 }`
 
 // apiType = "GRPC" Defined by const ApiConfigSource_GRPC ApiConfigSource_ApiType = 2

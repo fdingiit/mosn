@@ -30,6 +30,7 @@ import (
 	xdsbootstrap "github.com/envoyproxy/go-control-plane/envoy/config/bootstrap/v2"
 	"github.com/golang/protobuf/jsonpb"
 	jsoniter "github.com/json-iterator/go"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestClusterConfigParse(t *testing.T) {
@@ -402,4 +403,16 @@ func TestLoadSdsConfig(t *testing.T) {
 		t.Fatal("parse pilot name fail")
 	}
 
+}
+
+func TestLoadThirdPartCodecConfig(t *testing.T) {
+	cfg := &MOSNConfig{}
+	content := []byte(cfgStr)
+	if err := json.Unmarshal(content, cfg); err != nil {
+		t.Fatal("json unmarshal config failed, ", cfgStr, "", err)
+	}
+
+	if !assert.Equal(t, GoPlugin, cfg.Codec.Type) {
+		t.FailNow()
+	}
 }

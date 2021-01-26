@@ -40,6 +40,7 @@ type MOSNConfig struct {
 	Debug               PProfConfig          `json:"pprof,omitempty"`
 	Pid                 string               `json:"pid,omitempty"`     // pid file
 	Plugin              PluginConfig         `json:"plugin,omitempty"`  // plugin config
+	Codec               ThirdPartCodec       `json:"codec,omitempty"`   // codec config
 	Extends             []ExtendConfig       `json:"extends,omitempty"` // extend config
 }
 
@@ -68,6 +69,18 @@ type MetricsConfig struct {
 // PluginConfig for plugin config
 type PluginConfig struct {
 	LogBase string `json:"log_base"`
+}
+
+type ThirdPartCodecType string
+
+const (
+	GoPlugin ThirdPartCodecType = "go-plugin"
+	Wasm     ThirdPartCodecType = "wasm"
+)
+
+type ThirdPartCodec struct {
+	Type ThirdPartCodecType `json:"type"`
+	Dir  string             `json:"dir"`
 }
 
 // ExtendConfig for any extends

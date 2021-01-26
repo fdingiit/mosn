@@ -48,12 +48,11 @@ require (
 	gopkg.in/mgo.v2 v2.0.0-20190816093944-a6b53ec6cb22 // indirect
 	istio.io/api v0.0.0-20200227213531-891bf31f3c32
 	k8s.io/klog v1.0.0
-	mosn.io/api v0.0.0-20210113033009-f24f4e59b2bc
+	mosn.io/api v0.0.0-20210125030935-708f51a98261
 	mosn.io/pkg v0.0.0-20201228070559-80e9ae937bd5
 )
 
 replace (
 	github.com/envoyproxy/go-control-plane => github.com/envoyproxy/go-control-plane v0.9.4
-	mosn.io/api => github.com/fdingiit/api v0.0.0-20210119063843-f5ac263a02c5
-	mosn.io/pkg => github.com/fdingiit/pkg v0.0.0-20210119065649-3fcc1522bbbd
+	mosn.io/pkg => github.com/fdingiit/pkg v0.0.0-20210126093325-bfa0dfaa7c93
 )

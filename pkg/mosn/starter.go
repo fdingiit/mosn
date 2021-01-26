@@ -18,9 +18,12 @@
 package mosn
 
 import (
+	"fmt"
 	"net"
 	"sync"
 	"syscall"
+
+	"mosn.io/pkg/utils"
 
 	admin "mosn.io/mosn/pkg/admin/server"
 	"mosn.io/mosn/pkg/admin/store"
@@ -33,6 +36,7 @@ import (
 	"mosn.io/mosn/pkg/metrics/sink"
 	"mosn.io/mosn/pkg/network"
 	"mosn.io/mosn/pkg/plugin"
+	"mosn.io/mosn/pkg/protocol/xprotocol"
 	"mosn.io/mosn/pkg/router"
 	"mosn.io/mosn/pkg/server"
 	"mosn.io/mosn/pkg/server/keeper"
@@ -40,7 +44,6 @@ import (
 	"mosn.io/mosn/pkg/types"
 	"mosn.io/mosn/pkg/upstream/cluster"
 	"mosn.io/mosn/pkg/xds"
-	"mosn.io/pkg/utils"
 )
 
 // Mosn class which wrapper server
@@ -65,6 +68,7 @@ func NewMosn(c *v2.MOSNConfig) *Mosn {
 	initializePidFile(c.Pid)
 	initializeTracing(c.Tracing)
 	initializePlugin(c.Plugin.LogBase)
+	initializeThirdPartCodec(c.Codec)
 
 	// set the mosn config finally
 	defer configmanager.SetMosnConfig(c)
@@ -379,6 +383,19 @@ func initializePlugin(log string) {
 		log = types.MosnLogBasePath
 	}
 	plugin.InitPlugin(log)
+}
+
+func initializeThirdPartCodec(codec v2.ThirdPartCodec) {
+	switch codec.Type {
+	case v2.GoPlugin:
+		if err := xprotocol.InitCodec(codec.Dir); err != nil {
+			panic(err)
+		}
+	case v2.Wasm:
+		// todo
+	default:
+		panic(fmt.Sprintf("unknown third part codec type: %+v", codec.Type))
+	}
 }
 
 type clusterManagerFilter struct {

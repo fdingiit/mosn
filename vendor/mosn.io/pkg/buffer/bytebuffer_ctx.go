@@ -15,31 +15,33 @@
  * limitations under the License.
  */
 
-package api
+package buffer
 
 import (
-	"fmt"
-	"strings"
-	"time"
+	"context"
 )
 
-// Metadata field can be used to provide additional information about the route.
-// It can be used for configuration, stats, and logging.
-// The metadata should go under the filter namespace that will need it.
-type Metadata map[string]string
+var ins = ByteBufferCtx{}
 
-// DurationConfig ia a wrapper for time.Duration, so time config can be written in '300ms' or '1h' format
-type DurationConfig struct {
-	time.Duration
+func init() {
+	RegisterBuffer(&ins)
 }
 
-// UnmarshalJSON get DurationConfig.Duration from json file
-func (d *DurationConfig) UnmarshalJSON(b []byte) (err error) {
-	d.Duration, err = time.ParseDuration(strings.Trim(string(b), `"`))
-	return
+type ByteBufferCtx struct {
+	TempBufferCtx
 }
 
-// MarshalJSON
-func (d DurationConfig) MarshalJSON() (b []byte, err error) {
-	return []byte(fmt.Sprintf(`"%s"`, d.String())), nil
+func (ctx ByteBufferCtx) New() interface{} {
+	return NewByteBufferPoolContainer()
+}
+
+func (ctx ByteBufferCtx) Reset(i interface{}) {
+	p := i.(*ByteBufferPoolContainer)
+	p.Reset()
+}
+
+// GetBytesByContext returns []byte from byteBufferPool by context
+func GetBytesByContext(context context.Context, size int) *[]byte {
+	p := PoolContext(context).Find(&ins, nil).(*ByteBufferPoolContainer)
+	return p.Take(size)
 }

@@ -67,7 +67,7 @@ import (
  */
 
 func init() {
-	xprotocol.RegisterProtocol(ProtocolName, &boltProtocol{})
+	//.RegisterProtocol(ProtocolName, &boltProtocol{})
 }
 
 type boltProtocol struct{}

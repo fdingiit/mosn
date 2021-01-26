@@ -19,12 +19,13 @@ package mosn
 
 import (
 	"encoding/json"
+	"testing"
+	"time"
+
 	"mosn.io/mosn/pkg/config/v2"
 	_ "mosn.io/mosn/pkg/filter/network/connectionmanager"
 	_ "mosn.io/mosn/pkg/filter/network/proxy"
 	"mosn.io/mosn/pkg/router"
-	"testing"
-	"time"
 )
 
 // test compatible
@@ -200,4 +201,12 @@ func TestNewMosn(t *testing.T) {
 		// stop mosn
 		m.Close()
 	}
+}
+
+func Test_initializeThirdPartCodec(t *testing.T) {
+	dir := "/Users/dingfei/Go/src/github.com/fdingiit/xprotocol_thrift"
+	initializeThirdPartCodec(v2.ThirdPartCodec{
+		Type: v2.GoPlugin,
+		Dir:  dir,
+	})
 }
