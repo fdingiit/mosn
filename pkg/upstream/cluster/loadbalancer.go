@@ -164,6 +164,17 @@ func (lb *roundRobinLoadBalancer) ChooseHost(context types.LoadBalancerContext) 
 			return host
 		}
 	}
+
+	// Reference https://github.com/mosn/mosn/issues/1663
+	secondStartIndex := int(atomic.AddUint32(&lb.rrIndex, 1) % uint32(total))
+	for i := 0; i < total; i++ {
+		index := (i + secondStartIndex) % total
+		host := targets[index]
+		if host.Health() {
+			return host
+		}
+	}
+
 	return nil
 }
 
@@ -319,8 +330,8 @@ func (lb *EdfLoadBalancer) HostNum(metadata api.MetadataMatchCriteria) int {
 
 func newEdfLoadBalancerLoadBalancer(hosts types.HostSet, unWeightChoose func(types.LoadBalancerContext) types.Host, hostWeightFunc func(host WeightItem) float64) *EdfLoadBalancer {
 	lb := &EdfLoadBalancer{
-		hosts: hosts,
-		rand:  rand.New(rand.NewSource(time.Now().UnixNano())),
+		hosts:                  hosts,
+		rand:                   rand.New(rand.NewSource(time.Now().UnixNano())),
 		unweightChooseHostFunc: unWeightChoose,
 		hostWeightFunc:         hostWeightFunc,
 	}
